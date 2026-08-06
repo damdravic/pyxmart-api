@@ -1,0 +1,34 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/pyxmart_shop
+    username: root
+    password:
+    driver: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    generate-dll: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+
+  sql:
+    init:
+      mode: always
+    update:
+      mode: always
+
+application:
+  title: PyXmart API
+  version: 1.0
+
+jwt:
+  secret: something
+
+upload:
+  folder: C:/appImages/
