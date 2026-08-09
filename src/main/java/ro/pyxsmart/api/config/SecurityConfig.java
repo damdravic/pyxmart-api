@@ -19,21 +19,22 @@ import ro.pyxsmart.api.exceptions.CustomAuthenticationEntryPoint;
 public class SecurityConfig {
 
 
-    private static final String[] PUBLIC_URL = {"",""};
+    private static final String[] PUBLIC_URL = {"/admin/register"};
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers(PUBLIC_URL).permitAll());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/addNewRole").permitAll().anyRequest().authenticated());
 
-        http.exceptionHandling(exceptionHandling -> exceptionHandling
-                .accessDeniedHandler(customAccessDeniedHandler)
-                .authenticationEntryPoint(customAuthenticationEntryPoint));
-       // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+       http.exceptionHandling(exceptionHandling -> exceptionHandling
+               .accessDeniedHandler(customAccessDeniedHandler)
+               .authenticationEntryPoint(customAuthenticationEntryPoint));
+       //http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 

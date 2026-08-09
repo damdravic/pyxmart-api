@@ -1,6 +1,10 @@
 server:
   port: 8081
 
+logging:
+  level:
+    org.springframework.security: TRACE
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/pyxmart_shop
@@ -32,3 +36,4 @@ jwt:
 
 upload:
   folder: C:/appImages/
+

@@ -1,6 +1,7 @@
 package ro.pyxsmart.api.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ro.pyxsmart.api.models.Role;
 import ro.pyxsmart.api.models.User;
@@ -22,7 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return null;
+    public UserDetails getUserByEmail(String email) {
+
+        return userRepository.getUserByEmail(email);
     }
 }

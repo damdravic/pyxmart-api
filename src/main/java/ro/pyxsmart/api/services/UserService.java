@@ -1,5 +1,6 @@
 package ro.pyxsmart.api.services;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import ro.pyxsmart.api.models.Role;
 import ro.pyxsmart.api.models.User;
 import ro.pyxsmart.api.models.UserType;
@@ -10,6 +11,7 @@ public interface UserService  {
 
     UserResponseDTO create(RegisterUserDTO regUser, UserType userType);
     //UserResponseDTO create(RegisterUserDTO regUser);
-    User getUserByEmail(String email);
+    UserDetails getUserByEmail(String email);
+
 
 }
