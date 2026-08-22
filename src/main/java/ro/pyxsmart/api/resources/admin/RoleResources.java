@@ -39,6 +39,7 @@ public class RoleResources {
                 ApiResponse.builder()
                         .status(HttpStatus.OK.value())
                         .message("Permission added")
+                        .data(Map.of("permission" ,rolePermission.getPermission())) //return permission as a string
                         .build()
         );
     }

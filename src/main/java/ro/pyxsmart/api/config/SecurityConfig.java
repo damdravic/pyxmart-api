@@ -29,7 +29,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/addNewRole").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/addNewRole", "/admin/addPermission").permitAll().anyRequest().authenticated());
 
        http.exceptionHandling(exceptionHandling -> exceptionHandling
                .accessDeniedHandler(customAccessDeniedHandler)
