@@ -2,14 +2,15 @@ package ro.pyxsmart.api.mappers;
 
 import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.User;
-import ro.pyxsmart.api.models.modelDTO.UserResponseDTO;
+import ro.pyxsmart.api.models.modelDTO.UserDTO;
+
 
 @Component
 public class UserDTOMappers {
 
 
-    public UserResponseDTO getUserResponseDtoFroUser(User user){
-        return UserResponseDTO.builder()
+    public UserDTO getUserDtoFroUser(User user){
+        return UserDTO.builder()
                 .id(user.getId())
                 .firstname(user.getFirstname())
                 .lastname(user.getLastname())

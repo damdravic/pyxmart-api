@@ -1,7 +1,6 @@
 package ro.pyxsmart.api.models.modelDTO;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,13 +9,14 @@ import ro.pyxsmart.api.models.User;
 import java.util.Collection;
 import java.util.List;
 
+@Data
+@Setter
+@Getter
 @RequiredArgsConstructor
 public class PycUserDetails implements UserDetails {
 
 
     private final User user;
-
-
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {

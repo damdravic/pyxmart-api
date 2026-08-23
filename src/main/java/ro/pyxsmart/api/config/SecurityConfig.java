@@ -19,7 +19,7 @@ import ro.pyxsmart.api.exceptions.CustomAuthenticationEntryPoint;
 public class SecurityConfig {
 
 
-    private static final String[] PUBLIC_URL = {"/admin/register"};
+    private static final String[] PUBLIC_URL = {"/admin/register","/admin/login"};
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
@@ -29,7 +29,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/addNewRole", "/admin/addPermission").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/login","/admin/addNewRole", "/admin/addPermission").permitAll().anyRequest().authenticated());
 
        http.exceptionHandling(exceptionHandling -> exceptionHandling
                .accessDeniedHandler(customAccessDeniedHandler)

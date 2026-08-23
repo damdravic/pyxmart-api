@@ -16,9 +16,8 @@ import ro.pyxsmart.api.mappers.UserDTOMappers;
 import ro.pyxsmart.api.mappers.UserRowMapper;
 import ro.pyxsmart.api.models.User;
 import ro.pyxsmart.api.models.UserType;
-import ro.pyxsmart.api.models.modelDTO.PycUserDetails;
 import ro.pyxsmart.api.models.modelDTO.RegisterUserDTO;
-import ro.pyxsmart.api.models.modelDTO.UserResponseDTO;
+import ro.pyxsmart.api.models.modelDTO.UserDTO;
 import ro.pyxsmart.api.repositories.UserRepository;
 
 import java.util.Map;
@@ -36,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public UserResponseDTO create(RegisterUserDTO regUser, UserType userType) {
+    public UserDTO create(RegisterUserDTO regUser, UserType userType) {
 
         //1.Verify if user exist
       if(existsByEmail(regUser.getEmail())){
@@ -50,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         try{
             jdbc.update(INSERT_NEW_USER_QUERY,parameters , kh);
-            return userDTOMapper.getUserResponseDtoFroUser(
+            return userDTOMapper.getUserDtoFroUser(
                        User.builder()
                       .id(Objects.requireNonNull(kh.getKey()).longValue())
                       .firstname(regUser.getFirstname())
@@ -82,7 +81,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserDetails getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
 
         User user;
         try{
@@ -90,6 +89,6 @@ public class UserRepositoryImpl implements UserRepository {
         }catch (EmptyResultDataAccessException err){
             throw new UsernameNotFoundException("User not found");
         }
-        return new PycUserDetails(user);
+        return user;
     }
 }

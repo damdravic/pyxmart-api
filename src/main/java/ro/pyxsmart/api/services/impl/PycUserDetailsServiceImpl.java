@@ -6,6 +6,7 @@ import org.jspecify.annotations.NullMarked;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ro.pyxsmart.api.models.modelDTO.PycUserDetails;
 import ro.pyxsmart.api.services.PycUserDetailsService;
 import ro.pyxsmart.api.services.UserService;
 
@@ -17,7 +18,7 @@ public class PycUserDetailsServiceImpl implements PycUserDetailsService {
 
     @Override
     public @NonNull UserDetails loadUserByUsername(@NonNull String email) throws UsernameNotFoundException {
-        return userService.getUserByEmail(email);
+        return new PycUserDetails(userService.getUserByEmail(email));
 
     }
 }
