@@ -1,6 +1,7 @@
 package ro.pyxsmart.api.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import ro.pyxsmart.api.mappers.UserDTOMappers;
 import ro.pyxsmart.api.models.User;
@@ -13,6 +14,8 @@ import ro.pyxsmart.api.models.modelDTO.UserDTO;
 import ro.pyxsmart.api.repositories.UserRepository;
 import ro.pyxsmart.api.services.UserService;
 import ro.pyxsmart.api.utils.mappers.JwtTokenService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,12 +37,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String generateToken(User user) {
-        PycUserDetails pycUserDetails = new PycUserDetails(user);
+        PycUserDetails pycUserDetails = new PycUserDetails(user, null);
         return jwtTokenService.generateAccessToken(pycUserDetails);
     }
 
     @Override
     public UserDTO getUserDTOFromUser(User user) {
         return userDTOMappers.getUserDtoFroUser(user);
+    }
+
+    @Override
+    public List<GrantedAuthority> getAuthoritiesByUser(User user) {
+        return userRepository.getAuthoritiesByUser(user);
     }
 }

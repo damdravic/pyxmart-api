@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ro.pyxsmart.api.config.filters.JwtFilter;
 import ro.pyxsmart.api.exceptions.CustomAccessDeniedHandler;
 import ro.pyxsmart.api.exceptions.CustomAuthenticationEntryPoint;
 
@@ -22,6 +23,7 @@ public class SecurityConfig {
     private static final String[] PUBLIC_URL = {"/admin/register","/admin/login"};
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -29,12 +31,13 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/login","/admin/addNewRole", "/admin/addPermission").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/login","/admin/addNewRole", "/admin/addPermission")
+                .permitAll().anyRequest().authenticated());
 
        http.exceptionHandling(exceptionHandling -> exceptionHandling
                .accessDeniedHandler(customAccessDeniedHandler)
                .authenticationEntryPoint(customAuthenticationEntryPoint));
-       //http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+       http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
 

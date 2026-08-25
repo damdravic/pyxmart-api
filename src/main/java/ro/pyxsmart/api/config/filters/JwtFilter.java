@@ -68,6 +68,8 @@ try{
         if (jwtTokenService.isTokenValid(token)) {
             String subject = jwtTokenService.getSubject(token, request);
             List<GrantedAuthority> authorityList = jwtTokenService.getAuthorities(token);
+            log.info("subject -> {}" , subject);
+            log.info("Authority List -> {}" , authorityList);
             Authentication authentication = jwtTokenService.generateAuthToken(subject, authorityList, request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {
@@ -90,6 +92,7 @@ try{
         if(request.getCookies() != null ){
             for(Cookie c : request.getCookies()){
                 if("adminAccessToken".equals(c.getName())){
+                    log.info(c.getValue());
                     return c.getValue();
                 }
             }

@@ -5,6 +5,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ro.pyxsmart.api.models.User;
+import ro.pyxsmart.api.services.UserService;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,10 +18,12 @@ public class PycUserDetails implements UserDetails {
 
 
     private final User user;
+    private final List<GrantedAuthority> authorities;
+
 
     @Override
     public @NonNull Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return authorities;
     }
 
     @Override

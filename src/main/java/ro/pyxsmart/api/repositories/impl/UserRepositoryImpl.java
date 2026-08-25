@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,7 @@ import ro.pyxsmart.api.models.modelDTO.RegisterUserDTO;
 import ro.pyxsmart.api.models.modelDTO.UserDTO;
 import ro.pyxsmart.api.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -90,5 +92,15 @@ public class UserRepositoryImpl implements UserRepository {
             throw new UsernameNotFoundException("User not found");
         }
         return user;
+    }
+
+    @Override
+    public List<GrantedAuthority> getAuthoritiesByUser(User user) {
+        try{
+            jdbc.queryForObject(SELECT_AUTHORITIES_BY_USER_ID,Map.of("userId",user.getId()),String.class);
+        }catch (DataAccessException dae){
+            System.out.println("exception");
+        }
+        return null;
     }
 }
