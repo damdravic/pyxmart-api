@@ -21,11 +21,22 @@ newsletter_subscribed BOOLEAN DEFAULT FALSE,
 terms_accepted_at DATETIME DEFAULT NULL
 );
 
+CREATE TABLE IF NOT EXISTS user_roles(
+id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+user_id BIGINT UNSIGNED NOT NULL,
+role_id BIGINT UNSIGNED NOT NULL,
+CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users(id),
+CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES roles(id),
+CONSTRAINT uk_user_role UNIQUE(user_id,role_id)
+);
+
 CREATE TABLE IF NOT EXISTS roles(
  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
  role_name VARCHAR(50) NOT NULL,
  CONSTRAINT uk_roles UNIQUE (role_name)
 );
+
+
 
 CREATE TABLE IF NOT EXISTS role_permissions(
   role_id BIGINT UNSIGNED NOT NULL,

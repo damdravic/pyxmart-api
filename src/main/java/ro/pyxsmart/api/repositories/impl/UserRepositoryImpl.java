@@ -1,6 +1,7 @@
 package ro.pyxsmart.api.repositories.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -9,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -29,6 +31,7 @@ import static ro.pyxsmart.api.repositories.queries.UserQueries.*;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class UserRepositoryImpl implements UserRepository {
 
 
@@ -96,11 +99,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<GrantedAuthority> getAuthoritiesByUser(User user) {
-        try{
-            jdbc.queryForObject(SELECT_AUTHORITIES_BY_USER_ID,Map.of("userId",user.getId()),String.class);
-        }catch (DataAccessException dae){
-            System.out.println("exception");
+
+         List<GrantedAuthority> authorities =   jdbc.query(SELECT_AUTHORITIES_BY_USER_ID,Map.of("userId",user.getId()),
+                    (rs,rowNum) -> new SimpleGrantedAuthority(rs.getString("authority")));
+
+         log.info(" Authorities -> {}" , authorities.toString());
+         return  authorities;
         }
-        return null;
+
     }
-}
+

@@ -32,12 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email){
+
         return userRepository.getUserByEmail(email);
     }
 
     @Override
     public String generateToken(User user) {
-        PycUserDetails pycUserDetails = new PycUserDetails(user, null);
+        PycUserDetails pycUserDetails = new PycUserDetails(user, getAuthoritiesByUser(user));
         return jwtTokenService.generateAccessToken(pycUserDetails);
     }
 
