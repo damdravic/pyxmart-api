@@ -105,7 +105,7 @@ try{
         if(request.getCookies() != null){
             for(Cookie c : request.getCookies()){
                 if("customerAccessToken".equals(c.getName())){
-                    log.info("customerAccessToken founded");
+
                     return c.getValue();
                 }
             }
