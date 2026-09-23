@@ -2,38 +2,36 @@ package ro.pyxsmart.api.models;
 
 import lombok.Data;
 
+
+import java.time.LocalDateTime;
+
 @Data
 public class Product {
 
     private Long id;
 
     // =========================
-    // IDENTITATE
+    // IDENTITY
     // =========================
 
     private String name;
     private String code;
-    private String model;
     private String slug;
-    private String manufacturerCode;
-    private String manufacturerPartNumber;
-    private String ean;
-    private String gtin;
 
     // =========================
-    // DESCRIERE
+    // DESCRIPTIONS
     // =========================
 
     private String shortDescription;
     private String description;
-    private String technicalDescription;
+
 
     // =========================
-    // ORGANIZARE
+    // SORT
     // =========================
 
-    private Category category;
-    private Brand brand;
+    private Long categoryId;
+    private Long brandId;
 
 
     // =========================
@@ -42,9 +40,9 @@ public class Product {
 
 
     private ProductStatus status;
-    private boolean active;
+
     private boolean featured;
-    private boolean visible;
+
 
     // =========================
     // SEO
@@ -54,33 +52,9 @@ public class Product {
     private String metaDescription;
     private String metaKeywords;
 
-    // =========================
-    // LIVRARE / DIMENSIUNI
-    // =========================
-
-    private BigDecimal weight;
-    private BigDecimal length;
-    private BigDecimal width;
-    private BigDecimal height;
-    private BigDecimal packageWeight;
-    private BigDecimal packageLength;
-    private BigDecimal packageWidth;
-    private BigDecimal packageHeight;
 
     // =========================
-    // GARANȚIE
-    // =========================
-
-    private Integer warrantyMonths;
-
-    // =========================
-    // TVA / FISCAL
-    // =========================
-
-    private BigDecimal vatRate;
-
-    // =========================
-    // TIMPURI
+    // DATES
     // =========================
 
     private LocalDateTime createdAt;

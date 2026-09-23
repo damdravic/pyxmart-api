@@ -32,3 +32,55 @@ CREATE TABLE IF NOT EXISTS role_permissions(
   CONSTRAINT fk_role_permission_role FOREIGN KEY (role_id) REFERENCES roles(id),
   CONSTRAINT uk_role_permission UNIQUE (role_id,permission)
 );
+
+CREATE TABLE IF NOT EXISTS products(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+code VARCHAR(100) NOT NULL,
+slug VARCHAR(100) NOT NULL,
+short_description VARCHAR(100) NOT NULL,
+description TEXT NOT NULL,
+category_id BIGINT UNSIGNED NOT NULL,
+brand_id BIGINT UNSIGNED NOT NULL,
+product_status VARCHAR(30) NOT NULL,
+featured BOOLEAN NOT NULL DEFAULT FALSE,
+meta_title VARCHAR(100) DEFAULT NULL,
+meta_description VARCHAR(100) DEFAULT NULL,
+meta_keywords VARCHAR(100) DEFAULT NULL,
+created_at DATETIME DEFAULT NULL,
+updated_at DATETIME DEFAULT NULL,
+published_at DATETIME DEFAULT NULL,
+CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id),
+CONSTRAINT fk_products_brand FOREIGN KEY (brand_id) REFERENCES brands(id)
+);
+
+CREATE TABLE IF NOT EXISTS product_financials(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+product_id BIGINT UNSIGNED NOT NULL,
+purchase_price DECIMAL(10,2) DEFAULT NULL,
+selling_price DECIMAL(10,2) NOT NULL,
+vat_rate_id BIGINT UNSIGNED NOT NULL,
+CONSTRAINT fk_product_financial_product FOREIGN KEY (product_id) REFERENCES products(id),
+CONSTRAINT fk_product_financial_vat FOREIGN KEY (vat_rate_id) REFERENCES vat_rates(id)
+);
+
+CREATE TABLE IF NOT EXISTS category (
+id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+description TEXT ,
+category_parent_id BIGINT UNSIGNED DEFAULT NULL,
+CONSTRAINT fk_category_category_parent FOREIGN KEY (category_parent_id) REFERENCES category(id)
+);
+
+CREATE TABLE IF NOT EXISTS brands(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS vat_rates(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+rate DECIMAL(5,2) NOT NULL,
+short_description VARCHAR(150) DEFAULT NULL
+);
