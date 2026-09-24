@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ro.pyxsmart.api.mappers.ProductMapper;
+import ro.pyxsmart.api.mappers.ProductRowMapper;
 import ro.pyxsmart.api.models.Product;
 import ro.pyxsmart.api.models.ProductStatus;
 import ro.pyxsmart.api.repositories.ProductRepository;
@@ -54,12 +54,12 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> getAllProducts() {
-        return jdbc.query(SELECT_ALL_PRODUCTS_QUERY, new ProductMapper());
+        return jdbc.query(SELECT_ALL_PRODUCTS_QUERY, new ProductRowMapper());
     }
 
     @Override
     public Product getProductById(Long id) {
-        return jdbc.queryForObject(SELECT_PRODUCT_BY_ID_QUERY, Map.of("id",id),new ProductMapper()
+        return jdbc.queryForObject(SELECT_PRODUCT_BY_ID_QUERY, Map.of("id",id),new ProductRowMapper()
         );
     }
 

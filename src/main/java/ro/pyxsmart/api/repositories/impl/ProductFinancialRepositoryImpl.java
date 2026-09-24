@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ro.pyxsmart.api.mappers.ProductFinancialMapper;
+import ro.pyxsmart.api.mappers.ProductFinancialRowMapper;
 import ro.pyxsmart.api.models.ProductFinancial;
 import ro.pyxsmart.api.repositories.ProductFinancialRepository;
 
@@ -49,7 +49,7 @@ public class ProductFinancialRepositoryImpl implements ProductFinancialRepositor
 
     @Override
     public ProductFinancial getProdFinancialByProductId(Long productId) {
-       return  jdbc.queryForObject(SELECT_PRODUCT_FINANCIAL_BY_PRODUCT_ID_QUERY, Map.of("productId",productId), new ProductFinancialMapper());
+       return  jdbc.queryForObject(SELECT_PRODUCT_FINANCIAL_BY_PRODUCT_ID_QUERY, Map.of("productId",productId), new ProductFinancialRowMapper());
     }
 
     @Override

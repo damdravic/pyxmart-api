@@ -1,31 +1,54 @@
 package ro.pyxsmart.api.mappers;
 
-import org.springframework.jdbc.core.RowMapper;
 import ro.pyxsmart.api.models.Product;
-import ro.pyxsmart.api.models.ProductStatus;
+import ro.pyxsmart.api.models.ProductFinancial;
+import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
+import ro.pyxsmart.api.models.modelDTO.ProductRequest;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+public class ProductMapper {
 
+    public Product productFromProductRequest(ProductRequest productRequest){
 
-public class ProductMapper implements RowMapper<Product> {
-
-    @Override
-    public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Product product = new Product();
-        product.setId(rs.getLong("id"));
-        product.setName(rs.getString("name"));
-        product.setCode(rs.getString("code"));
-        product.setShortDescription(rs.getString("short_description"));
-        product.setDescription(rs.getString("description"));
-        product.setCategoryId(rs.getLong("category_id"));
-        product.setBrandId(rs.getLong("brand_id"));
-        product.setStatus(ProductStatus.valueOf(rs.getString("product_status")));
-        product.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-
-
-
-      return product;
+       return Product.builder()
+                .id(productRequest.getProductId())
+                .name(productRequest.getName())
+                .code(productRequest.getCode())
+                .slug(productRequest.getSlug())
+                .shortDescription(productRequest.getShortDescription())
+                .description(productRequest.getDescription())
+                .categoryId(productRequest.getCategoryId())
+                .brandId(productRequest.getBrandId())
+                .build();
 
     }
+
+    public ProductFinancial productFinancialFromProductRequest(ProductRequest productRequest, Long productId){
+
+        return ProductFinancial.builder()
+                .productId(productId)
+                .purchasePrice(productRequest.getPurchasePrice())
+                .sellingPrice(productRequest.getSellingPrice())
+                .vatRateId(productRequest.getVatRateId())
+                .build();
+    }
+
+    public ProductAdminDTO toProductAdminDTO(Product product, ProductFinancial productFinancial){
+
+         return   ProductAdminDTO.builder()
+                 .id(product.getId())
+                 .name(product.getName())
+                 .code(product.getCode())
+                 .slug(product.getSlug())
+                 .shortDescription(product.getShortDescription())
+                 .description(product.getDescription())
+                 .categoryId(product.getCategoryId())
+                 .brandId(product.getBrandId())
+                 .purchasePrice(productFinancial.getPurchasePrice())
+                 .sellingPrice(productFinancial.getSellingPrice())
+                 .vatRateId(productFinancial.getVatRateId())
+                 .build();
+
+    }
+
+
 }

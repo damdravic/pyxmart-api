@@ -1,11 +1,13 @@
 package ro.pyxsmart.api.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class Product {
 
     private Long id;

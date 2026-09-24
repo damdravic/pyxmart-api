@@ -8,7 +8,7 @@ import ro.pyxsmart.api.models.ProductFinancial;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductFinancialMapper implements RowMapper<ProductFinancial> {
+public class ProductFinancialRowMapper implements RowMapper<ProductFinancial> {
     @Override
     public @Nullable ProductFinancial mapRow(ResultSet rs, int rowNum) throws SQLException {
         return
