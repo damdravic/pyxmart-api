@@ -1,11 +1,13 @@
 package ro.pyxsmart.api.mappers;
 
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class RoleRowMapper implements RowMapper<Role> {
 
 

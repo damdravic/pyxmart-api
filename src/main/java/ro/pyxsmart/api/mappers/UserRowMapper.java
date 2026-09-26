@@ -2,11 +2,13 @@ package ro.pyxsmart.api.mappers;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Component
 public class UserRowMapper implements RowMapper<User> {
     @Override
     public @Nullable User mapRow(ResultSet rs, int rowNum) throws SQLException {

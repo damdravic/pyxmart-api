@@ -1,13 +1,16 @@
 package ro.pyxsmart.api.mappers;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.Product;
 import ro.pyxsmart.api.models.ProductStatus;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+@Component
 public class ProductRowMapper implements RowMapper<Product> {
 
     @Override

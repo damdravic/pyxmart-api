@@ -31,7 +31,7 @@ public class ProductAdminDTO {
     private LocalDateTime updatedAt;
     private LocalDateTime publishedAt;
 
-    private Long productId;
+   // private Long productId;
     private BigDecimal purchasePrice;
     private BigDecimal sellingPrice;
     private Long vatRateId;

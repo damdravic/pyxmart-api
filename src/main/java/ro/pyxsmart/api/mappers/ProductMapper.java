@@ -1,10 +1,12 @@
 package ro.pyxsmart.api.mappers;
 
+import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.Product;
 import ro.pyxsmart.api.models.ProductFinancial;
 import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
 import ro.pyxsmart.api.models.modelDTO.ProductRequest;
 
+@Component
 public class ProductMapper {
 
     public Product productFromProductRequest(ProductRequest productRequest){
