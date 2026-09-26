@@ -15,7 +15,6 @@ public class ProductMapper {
                 .id(productRequest.getProductId())
                 .name(productRequest.getName())
                 .code(productRequest.getCode())
-                .slug(productRequest.getSlug())
                 .shortDescription(productRequest.getShortDescription())
                 .description(productRequest.getDescription())
                 .categoryId(productRequest.getCategoryId())

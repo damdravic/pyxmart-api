@@ -47,6 +47,8 @@ public class AuthAdminResource {
     @PostMapping("/login")
     public ResponseEntity<@NonNull ApiResponse> login (@RequestBody Credentials credentials){
 
+        log.info("user : {} , pass : {}", credentials.getEmail(), credentials.getPassword());
+
         User user = userService.getUserByEmail(credentials.getEmail());
         return user.isUsingMFA() ? sendCode(user) : sendResponse(user);
 

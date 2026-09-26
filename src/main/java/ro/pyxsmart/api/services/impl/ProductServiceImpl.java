@@ -25,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductAdminDTO createNewProduct(ProductRequest productRequest) {
+        log.info("hit service");
 
         Product product = productRepository.createProduct(productMapper.productFromProductRequest(productRequest));
         ProductFinancial productFinancial = productMapper.productFinancialFromProductRequest(productRequest,product.getId());

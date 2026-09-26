@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Component
 public class DebugRequestFilter extends OncePerRequestFilter {
@@ -20,6 +21,7 @@ public class DebugRequestFilter extends OncePerRequestFilter {
         System.out.println("URI: " + request.getRequestURI());
         System.out.println("Authorization: " + request.getHeader("Authorization"));
         System.out.println("Body" );
+
 
         filterChain.doFilter(request, response);
     }
