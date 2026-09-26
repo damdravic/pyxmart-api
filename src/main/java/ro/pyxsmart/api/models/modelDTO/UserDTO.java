@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDTO {
+public class UserDTO {
 
     private Long id;
     private String firstname;
     private String lastname;
     private String email;
     private String type;
+    private boolean isUsingMFA;
 }

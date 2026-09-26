@@ -1,6 +1,7 @@
 package ro.pyxsmart.api.repositories.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -8,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -16,11 +19,11 @@ import ro.pyxsmart.api.mappers.UserDTOMappers;
 import ro.pyxsmart.api.mappers.UserRowMapper;
 import ro.pyxsmart.api.models.User;
 import ro.pyxsmart.api.models.UserType;
-import ro.pyxsmart.api.models.modelDTO.PycUserDetails;
 import ro.pyxsmart.api.models.modelDTO.RegisterUserDTO;
-import ro.pyxsmart.api.models.modelDTO.UserResponseDTO;
+import ro.pyxsmart.api.models.modelDTO.UserDTO;
 import ro.pyxsmart.api.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -28,6 +31,7 @@ import static ro.pyxsmart.api.repositories.queries.UserQueries.*;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class UserRepositoryImpl implements UserRepository {
 
 
@@ -36,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public UserResponseDTO create(RegisterUserDTO regUser, UserType userType) {
+    public UserDTO create(RegisterUserDTO regUser, UserType userType) {
 
         //1.Verify if user exist
       if(existsByEmail(regUser.getEmail())){
@@ -50,7 +54,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         try{
             jdbc.update(INSERT_NEW_USER_QUERY,parameters , kh);
-            return userDTOMapper.getUserResponseDtoFroUser(
+            return userDTOMapper.getUserDtoFroUser(
                        User.builder()
                       .id(Objects.requireNonNull(kh.getKey()).longValue())
                       .firstname(regUser.getFirstname())
@@ -82,7 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserDetails getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
 
         User user;
         try{
@@ -90,6 +94,18 @@ public class UserRepositoryImpl implements UserRepository {
         }catch (EmptyResultDataAccessException err){
             throw new UsernameNotFoundException("User not found");
         }
-        return new PycUserDetails(user);
+        return user;
     }
-}
+
+    @Override
+    public List<GrantedAuthority> getAuthoritiesByUser(User user) {
+
+         List<GrantedAuthority> authorities =   jdbc.query(SELECT_AUTHORITIES_BY_USER_ID,Map.of("userId",user.getId()),
+                    (rs,rowNum) -> new SimpleGrantedAuthority(rs.getString("authority")));
+
+         log.info(" Authorities -> {}" , authorities.toString());
+         return  authorities;
+        }
+
+    }
+

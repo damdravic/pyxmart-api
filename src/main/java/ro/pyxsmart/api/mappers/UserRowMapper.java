@@ -5,8 +5,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.User;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+
 
 @Component
 public class UserRowMapper implements RowMapper<User> {
@@ -25,13 +28,20 @@ public class UserRowMapper implements RowMapper<User> {
                .emailVerified(rs.getBoolean("email_verified"))
                .accountLocked(rs.getBoolean("account_locked"))
                .failedLoginAttempts(rs.getInt("failed_login_attempts"))
-               .lastLoginAt(rs.getDate("last_login_at").toLocalDate())
-               .createdAt(rs.getDate("created_at").toLocalDate())
-               .updatedAt(rs.getDate("updated_at").toLocalDate())
+               .lastLoginAt(toLocalDate(rs,"last_login_at"))
+               .createdAt(toLocalDate(rs,"created_at"))
+               .updatedAt(toLocalDate(rs,"updated_at"))
                .newsletterSubscribed(rs.getBoolean("newsletter_subscribed"))
-               .termsAcceptedAt(rs.getDate("terms_accepted").toLocalDate())
+               .termsAcceptedAt(toLocalDate(rs,"terms_accepted_at"))
                .build();
 
 
     }
+
+    private LocalDate toLocalDate(ResultSet rs,String column) throws SQLException {
+        Date date = rs.getDate(column);
+        return date != null ? date.toLocalDate() : null;
+    }
+
+
 }

@@ -23,6 +23,7 @@ public class User {
     private String phone;
     private String password;
     private String type;
+    private boolean isUsingMFA;
     private boolean enabled;
     private boolean emailVerified;
     private boolean accountLocked;
