@@ -7,9 +7,11 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ro.pyxsmart.api.mappers.ProductAdminDTORowMapper;
 import ro.pyxsmart.api.mappers.ProductRowMapper;
 import ro.pyxsmart.api.models.Product;
 import ro.pyxsmart.api.models.ProductStatus;
+import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
 import ro.pyxsmart.api.repositories.ProductRepository;
 
 import java.util.List;
@@ -53,8 +55,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return jdbc.query(SELECT_ALL_PRODUCTS_QUERY, new ProductRowMapper());
+    public List<ProductAdminDTO> getAllProducts() {
+
+        return jdbc.query(SELECT_ALL_PRODUCTS_ADMIN_QUERY, new ProductAdminDTORowMapper()
+        );
     }
 
     @Override

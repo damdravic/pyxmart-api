@@ -7,7 +7,7 @@ public class ProductQueries {
     public static final String INSERT_NEW_PRODUCT_QUERY = "INSERT INTO products (name, code, slug, short_description, description, category_id, brand_id, product_status, created_at  ) VALUES" +
             " (:name, :code, :slug, :shortDescription, :description, :categoryId, :brandId, :productStatus, NOW())";
 
-    public static final String SELECT_ALL_PRODUCTS_QUERY = "SELECT * FROM products";
+    public static final String SELECT_ALL_PRODUCTS_ADMIN_QUERY = "SELECT * FROM products p LEFT JOIN product_financials pf ON pf.product_id = p.id ";
 
     public static final String SELECT_PRODUCT_BY_ID_QUERY = "SELECT * FROM products WHERE id= :id";
 

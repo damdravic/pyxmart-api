@@ -4,13 +4,16 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.pyxsmart.api.models.ApiResponse;
 import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
 import ro.pyxsmart.api.models.modelDTO.ProductRequest;
 import ro.pyxsmart.api.services.ProductService;
 
 import java.net.http.HttpResponse;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/product")
@@ -36,9 +39,21 @@ public class ProductResource {
 
 
 
-
+          //TODO return
         return null;
 
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<@NonNull ApiResponse> getAll (){
+
+           return ResponseEntity.ok(
+                   ApiResponse.builder()
+                           .status(HttpStatus.OK.value())
+                           .message("Products load successfully")
+                           .data(Map.of("productsAdminDTO",  productService.getAll()))
+                           .build()
+           );
     }
 
 }

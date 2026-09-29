@@ -13,6 +13,8 @@ import ro.pyxsmart.api.repositories.ProductFinancialRepository;
 import ro.pyxsmart.api.repositories.ProductRepository;
 import ro.pyxsmart.api.services.ProductService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -39,5 +41,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductAdminDTO updateProductById(Long id, ProductRequest requestProduct) {
         //TODO - implement product update
         return null;
+    }
+
+    @Override
+    public List<ProductAdminDTO> getAll() {
+        return productRepository.getAllProducts();
     }
 }

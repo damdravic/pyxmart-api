@@ -79,7 +79,7 @@ public class AuthAdminResource {
     @GetMapping("/authMe")
     public ResponseEntity<@NonNull ApiResponse> authMe(Authentication authentication){
 
-        //String email =  Objects.requireNonNull(authentication.getPrincipal()).toString();
+
         String email = authentication.getName();
         UserDTO userDTO = userService.getUserDTOFromUser(userService.getUserByEmail(email));
 

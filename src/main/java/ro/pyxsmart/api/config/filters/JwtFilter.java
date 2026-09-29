@@ -72,6 +72,7 @@ try{
             log.info("Authority List -> {}" , authorityList);
             Authentication authentication = jwtTokenService.generateAuthToken(subject, authorityList, request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("...............security set ");
         } else {
             SecurityContextHolder.clearContext();
         }

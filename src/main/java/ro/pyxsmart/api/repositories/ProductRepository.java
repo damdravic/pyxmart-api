@@ -1,6 +1,7 @@
 package ro.pyxsmart.api.repositories;
 
 import ro.pyxsmart.api.models.Product;
+import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ProductRepository {
 
     public Product createProduct(Product product);
 
-    public List<Product> getAllProducts();
+    public List<ProductAdminDTO> getAllProducts();
 
     public Product getProductById(Long id);
 
