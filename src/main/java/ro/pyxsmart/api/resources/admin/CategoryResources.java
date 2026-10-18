@@ -13,14 +13,17 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/category")
 @RequiredArgsConstructor
 public class CategoryResources {
 
     private final CategoryService categoryService;
 
-    @PostMapping("/addRepository")
+    @PostMapping("/addCategory")
     public ResponseEntity<@NonNull ApiResponse> addRepository(@RequestBody Category category){
+
+
+
         return ResponseEntity.ok().body(
                  ApiResponse.builder()
                          .status(HttpStatus.OK.value())
@@ -30,7 +33,27 @@ public class CategoryResources {
         );
     }
 
+    @GetMapping("/getAllCategories")
+    public ResponseEntity<@NonNull ApiResponse> getAllCategories (){
+        return ResponseEntity.ok().body(
+                ApiResponse.builder()
+                        .message("All categories")
+                        .status(HttpStatus.OK.value())
+                        .data(Map.of("categories", categoryService.getAllCategories()))
+                        .build()
+        );
+    }
 
+    @GetMapping("/getCategoryById/{id}")
+    public ResponseEntity<@NonNull ApiResponse> getCategoryById(@PathVariable Long id){
+        return ResponseEntity.ok().body(
+                ApiResponse.builder()
+                        .message("All categories")
+                        .status(HttpStatus.OK.value())
+                        .data(Map.of("category",categoryService.getCategoryById(id)))
+                        .build()
+        );
+    }
 
 
 }

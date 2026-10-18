@@ -6,6 +6,8 @@ import ro.pyxsmart.api.models.Category;
 import ro.pyxsmart.api.repositories.CategoryRepository;
 import ro.pyxsmart.api.services.CategoryService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -14,7 +16,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
-        return categoryRepository.createCategory(category);
+
+        if(!existsByName(category.getName())) {
+            //TODO if category name exists, check if exists with the same parentId.
+            //
+            return categoryRepository.createCategory(category);
+        }else{
+            throw new RuntimeException("Category name already exists");
+        }
+    }
+
+    private boolean existsByName(String name) {
+        return categoryRepository.existsByName(name);
     }
 
     @Override
@@ -23,13 +36,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category[] getCategories() {
-        return new Category[0];
+    public List<Category> getAllCategories() {
+        return categoryRepository.getAllCategories();
+    }
+
+    @Override
+    public List<Category> getActiveCategories() {
+        return List.of();
     }
 
     @Override
     public Category getCategoryById(Long id) {
-        return null;
+
+        return categoryRepository.getCategoryById(id);
     }
 
     @Override

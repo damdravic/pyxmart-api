@@ -57,11 +57,10 @@ parent_id BIGINT UNSIGNED DEFAULT NULL,
 name VARCHAR(100) NOT NULL ,
 description VARCHAR(100) ,
 long_description TEXT,
-slug VARCHAR(100),
+slug VARCHAR(100) UNIQUE,
 sort_order INT DEFAULT NULL,
 is_active BOOLEAN DEFAULT TRUE,
-CONSTRAINT fk_categories_parent_id FOREIGN KEY (parent_id) REFERENCES categories(id),
-CREATE UNIQUE INDEX uq_categories_parent_name ON categories ( (COALESCE(parent_id, 0)),name);
+CONSTRAINT fk_categories_parent_id FOREIGN KEY (parent_id) REFERENCES categories(id)
 );
 
 INSERT INTO `categories` (`id`, `parent_id`, `name`, `description`, `long_description`, `slug`, `sort_order`, `is_active`) VALUES
