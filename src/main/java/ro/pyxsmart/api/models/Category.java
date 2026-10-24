@@ -17,7 +17,7 @@ public class Category {
     private String longDescription;
     private String slug;
     private Integer sortOrder;
-    private boolean isActive;
+    private Boolean active;
 
 
 }

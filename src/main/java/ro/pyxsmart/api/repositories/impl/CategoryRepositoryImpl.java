@@ -37,7 +37,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     private SqlParameterSource getParams(Category category) {
-        return new MapSqlParameterSource()
+        MapSqlParameterSource params =  new MapSqlParameterSource()
                 .addValue("parentId", category.getParentId())
                 .addValue("name",category.getName())
                 .addValue("description",category.getDescription())
@@ -45,11 +45,28 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 .addValue("slug",category.getSlug())
                 .addValue("sortOrder",category.getSortOrder());
 
+        if(category.getActive() != null){
+            params.addValue("active",category.getActive());
+        }
+
+        if(category.getId() != null){
+            params.addValue("id",category.getId());
+        }
+
+        return params;
+
     }
 
     @Override
     public Category editCategory(Category category) {
-        return null;
+
+        SqlParameterSource params = getParams(category);
+
+          jdbc.update(UPDATE_CATEGORY_QUERY,params);
+
+          return category;
+
+
     }
 
     @Override
@@ -80,13 +97,38 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public List<Category> getActiveCategories() {
-        return List.of();
+
+        return jdbc.query(SELECT_ALL_ACTIVE_CATEGORIES_QUERY,new CategoryRowMapper());
+    }
+
+    @Override
+    public boolean existByNameAndParentId(String name, Long parentId) {
+
+        SqlParameterSource params = new MapSqlParameterSource().addValue("name",name)
+                .addValue("parentId",parentId);
+        return Boolean.TRUE.equals(
+                jdbc.queryForObject(EXISTS_CATEGORY_BY_NAME_AND_PARENT_ID_QUERY,params, Boolean.class));
+    }
+
+    @Override
+    public boolean existByNameAndParentIdAndIdNot(String name, Long parentId, Long id) {
+        return Boolean.TRUE.equals(
+                jdbc.queryForObject(EXIST_CATEGORY_BY_NAME_AND_PARENT_ID_AND_ID_NOT_QUERY,Map.of("name", name,"parentId", parentId ,"id",id),Boolean.class)
+        );
     }
 
     @Override
     public boolean existsByName(String name) {
         return Boolean.TRUE.equals(
                 jdbc.queryForObject(EXISTS_CATEGORY_BY_NAME_QUERY,Map.of("name",name),Boolean.class)
+        );
+    }
+
+    @Override
+    public boolean existsBySlug(String slug) {
+        SqlParameterSource p = new MapSqlParameterSource().addValue("slug",slug);
+        return Boolean.TRUE.equals(
+                jdbc.queryForObject(EXISTS_CATEGORY_BY_SLUG_QUERY,p,Boolean.class)
         );
     }
 }

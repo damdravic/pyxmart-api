@@ -20,7 +20,7 @@ public class CategoryResources {
     private final CategoryService categoryService;
 
     @PostMapping("/addCategory")
-    public ResponseEntity<@NonNull ApiResponse> addRepository(@RequestBody Category category){
+    public ResponseEntity<@NonNull ApiResponse> addCategory(@RequestBody Category category){
 
 
 
@@ -44,6 +44,21 @@ public class CategoryResources {
         );
     }
 
+
+    @GetMapping("/getActiveCategories")
+    public ResponseEntity<@NonNull ApiResponse> getActiveCategories (){
+        return ResponseEntity.ok().body(
+                ApiResponse.builder()
+                        .message("All categories")
+                        .status(HttpStatus.OK.value())
+                        .data(Map.of("categories", categoryService.getActiveCategories()))
+                        .build()
+        );
+    }
+
+
+
+
     @GetMapping("/getCategoryById/{id}")
     public ResponseEntity<@NonNull ApiResponse> getCategoryById(@PathVariable Long id){
         return ResponseEntity.ok().body(
@@ -51,6 +66,20 @@ public class CategoryResources {
                         .message("All categories")
                         .status(HttpStatus.OK.value())
                         .data(Map.of("category",categoryService.getCategoryById(id)))
+                        .build()
+        );
+    }
+
+    @PostMapping("/editCategory")
+    public ResponseEntity<@NonNull ApiResponse> editCategory(@RequestBody Category category){
+
+
+
+        return ResponseEntity.ok().body(
+                ApiResponse.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Category edited successfully")
+                        .data(Map.of("category",categoryService.editCategory(category)))
                         .build()
         );
     }

@@ -18,7 +18,7 @@ public class CategoryRowMapper implements RowMapper<Category> {
                 .longDescription(rs.getString("long_description"))
                 .slug(rs.getString("slug"))
                 .sortOrder(rs.getInt("sort_order"))
-                .isActive(rs.getBoolean("is_active"))
+                .active(rs.getBoolean("is_active"))
                 .build();
     }
 }

@@ -1,7 +1,9 @@
 package ro.pyxsmart.api.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import ro.pyxsmart.api.exceptions.AlreadyExistsException;
 import ro.pyxsmart.api.models.Category;
 import ro.pyxsmart.api.repositories.CategoryRepository;
 import ro.pyxsmart.api.services.CategoryService;
@@ -17,23 +19,42 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category createCategory(Category category) {
 
-        if(!existsByName(category.getName())) {
-            //TODO if category name exists, check if exists with the same parentId.
-            //
+        if(categoryRepository.existsBySlug(category.getSlug())) {
+            throw new AlreadyExistsException("Category slug already was used.Try another one !!!");
+        }
+
+        if(!existsByNameAndParentId(category.getName(),category.getParentId())) {
+
             return categoryRepository.createCategory(category);
         }else{
-            throw new RuntimeException("Category name already exists");
+            throw new AlreadyExistsException("Category name exist");
         }
     }
 
-    private boolean existsByName(String name) {
-        return categoryRepository.existsByName(name);
+    private boolean existsByNameAndParentIdAndIdNot(String name,Long parentId, Long id) {
+       return categoryRepository.existByNameAndParentIdAndIdNot(name,parentId,id);
+    }
+
+    private boolean existsByNameAndParentId(String name,Long parentId) {
+
+        return categoryRepository.existByNameAndParentId(name,parentId);
     }
 
     @Override
     public Category editCategory(Category category) {
-        return null;
+
+        if(categoryRepository.existsBySlug(category.getSlug())) {
+            throw new AlreadyExistsException("Category slug already was used.Try another one !!!");
+        }
+
+        if(!existsByNameAndParentIdAndIdNot(category.getName(),category.getParentId(),category.getId())){
+            return categoryRepository.editCategory(category);
+        }else{
+            throw new AlreadyExistsException("Category name already exists");
+        }
     }
+
+
 
     @Override
     public List<Category> getAllCategories() {
@@ -42,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getActiveCategories() {
-        return List.of();
+        return categoryRepository.getActiveCategories();
     }
 
     @Override

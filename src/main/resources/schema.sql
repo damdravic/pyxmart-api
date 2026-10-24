@@ -63,8 +63,6 @@ is_active BOOLEAN DEFAULT TRUE,
 CONSTRAINT fk_categories_parent_id FOREIGN KEY (parent_id) REFERENCES categories(id)
 );
 
-INSERT INTO `categories` (`id`, `parent_id`, `name`, `description`, `long_description`, `slug`, `sort_order`, `is_active`) VALUES
-(NULL, NULL, 'Test Category', 'Test Category for Test', 'This Category in not a real category.It is just for testing reason.', 'category/testCategory', NULL, '1');
 
 CREATE TABLE IF NOT EXISTS products(
 id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,

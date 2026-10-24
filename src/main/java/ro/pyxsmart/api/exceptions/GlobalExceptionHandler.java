@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
                 ApiResponse.builder()
                         .message(ex.getMessage())
                         .build()
-        )
+        );
     }
 
 

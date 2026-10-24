@@ -22,6 +22,11 @@ public interface CategoryRepository {
 
     List<Category> getActiveCategories ();
 
+    boolean existByNameAndParentId(String name, Long parentId);
+
+    boolean existByNameAndParentIdAndIdNot(String name, Long parentId,  Long id);
 
     boolean existsByName(String name);
+
+    boolean existsBySlug(String slug);
 }
