@@ -2,6 +2,7 @@ package ro.pyxsmart.api.resources.admin;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/category")
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryResources {
 
     private final CategoryService categoryService;
@@ -22,6 +24,7 @@ public class CategoryResources {
     @PostMapping("/addCategory")
     public ResponseEntity<@NonNull ApiResponse> addCategory(@RequestBody Category category){
 
+        log.info(category.toString());
 
 
         return ResponseEntity.ok().body(
@@ -35,6 +38,8 @@ public class CategoryResources {
 
     @GetMapping("/getAllCategories")
     public ResponseEntity<@NonNull ApiResponse> getAllCategories (){
+     log.info("in resource get all");
+
         return ResponseEntity.ok().body(
                 ApiResponse.builder()
                         .message("All categories")
