@@ -42,16 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category editCategory(Category category) {
-
-        if(categoryRepository.existsBySlug(category.getSlug())) {
-            throw new AlreadyExistsException("Category slug already was used.Try another one !!!");
-        }
-
-        if(!existsByNameAndParentIdAndIdNot(category.getName(),category.getParentId(),category.getId())){
             return categoryRepository.editCategory(category);
-        }else{
-            throw new AlreadyExistsException("Category name already exists");
-        }
     }
 
 
