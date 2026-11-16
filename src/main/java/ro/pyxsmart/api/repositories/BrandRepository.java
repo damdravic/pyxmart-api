@@ -1,14 +1,16 @@
 package ro.pyxsmart.api.repositories;
 
+import org.springframework.web.multipart.MultipartFile;
 import ro.pyxsmart.api.models.Brand;
+
+import java.util.List;
 
 public interface BrandRepository {
 
     Brand createBrand (Brand brand);
 
     Brand editBrand (Brand brand);
-
-    Brand[] getBrands ();
+    List<Brand> getBrands ();
 
     Brand getBrandById (Long id);
 
@@ -18,4 +20,5 @@ public interface BrandRepository {
 
     void deleteBrand ( Long id );
 
+    String saveLogo(MultipartFile file);
 }

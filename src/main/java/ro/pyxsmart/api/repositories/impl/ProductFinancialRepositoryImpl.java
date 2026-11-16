@@ -7,15 +7,16 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ro.pyxsmart.api.exceptions.NotFoundException;
 import ro.pyxsmart.api.mappers.ProductFinancialRowMapper;
 import ro.pyxsmart.api.models.ProductFinancial;
+import ro.pyxsmart.api.models.modelDTO.ProductFinancialRequest;
 import ro.pyxsmart.api.repositories.ProductFinancialRepository;
 
 import java.util.Map;
 import java.util.Objects;
 
-import static ro.pyxsmart.api.repositories.queries.ProductQueries.INSERT_PRODUCT_FINANCIAL_QUERY;
-import static ro.pyxsmart.api.repositories.queries.ProductQueries.SELECT_PRODUCT_FINANCIAL_BY_PRODUCT_ID_QUERY;
+import static ro.pyxsmart.api.repositories.queries.ProductQueries.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,35 +26,47 @@ public class ProductFinancialRepositoryImpl implements ProductFinancialRepositor
 
 
     @Override
-    public ProductFinancial createProdFinancial(ProductFinancial productFinancial) {
+    public ProductFinancial createProductFinancial(Long productId, ProductFinancialRequest financial) {
 
-        KeyHolder kh = new GeneratedKeyHolder();
-        SqlParameterSource parameterSource = getSqlParams(productFinancial);
+        if (verifyVatId(financial.getVatRateId())){
 
-        jdbc.update(INSERT_PRODUCT_FINANCIAL_QUERY,parameterSource,kh);
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbc.update(INSERT_PRODUCT_FINANCIAL_QUERY, getFinancialParams(productId, financial), keyHolder);
 
-        productFinancial.setId(Objects.requireNonNull(kh.getKey()).longValue());
-        return productFinancial;
-
-
-    }
-
-    private SqlParameterSource getSqlParams(ProductFinancial productFinancial) {
-        return new MapSqlParameterSource()
-                .addValue("id",productFinancial.getId())
-                .addValue("productId", productFinancial.getProductId())
-                .addValue("purchasePrice", productFinancial.getPurchasePrice())
-                .addValue("sellingPrice",productFinancial.getSellingPrice())
-                .addValue("vatRateId", productFinancial.getVatRateId());
+            return ProductFinancial.builder()
+                    .id(Objects.requireNonNull(keyHolder.getKey()).longValue())
+                    .productId(productId)
+                    .purchasePrice(financial.getPurchasePrice())
+                    .sellingPrice(financial.getSellingPrice())
+                    .vatRateId(financial.getVatRateId())
+                    .build();
+        } else {
+            throw new NotFoundException("VAT Rate not exist !!!");
+        }
     }
 
     @Override
     public ProductFinancial getProdFinancialByProductId(Long productId) {
-       return  jdbc.queryForObject(SELECT_PRODUCT_FINANCIAL_BY_PRODUCT_ID_QUERY, Map.of("productId",productId), new ProductFinancialRowMapper());
+        return null;
     }
 
     @Override
     public ProductFinancial updateProdFinancialByProductId(Long productId) {
         return null;
     }
+
+    private boolean verifyVatId(Long vatRateId) {
+        Integer count = jdbc.queryForObject(SELECT_PRODUCT_FINANCIAL_BY_VAT_ID_QUERY, Map.of("vatRateId", vatRateId), Integer.class);
+        return count != null && count > 0;
+    }
+
+    private MapSqlParameterSource getFinancialParams(Long id, ProductFinancialRequest financial) {
+        return new MapSqlParameterSource()
+                .addValue("productId", id)
+                .addValue("purchasePrice", financial.getPurchasePrice())
+                .addValue("sellingPrice", financial.getSellingPrice())
+                .addValue("vatRateId", financial.getVatRateId());
+    }
+
+
 }

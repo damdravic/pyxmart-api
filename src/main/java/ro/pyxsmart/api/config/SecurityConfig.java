@@ -20,7 +20,7 @@ import ro.pyxsmart.api.exceptions.CustomAuthenticationEntryPoint;
 public class SecurityConfig {
 
 
-    private static final String[] PUBLIC_URL = {"/admin/register","/admin/login"};
+    private static final String[] PUBLIC_URL = {"/admin/register","/admin/login","/appImages/**"};
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtFilter jwtFilter;
@@ -31,7 +31,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(Customizer.withDefaults());
         http.authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll());
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/admin/register","/admin/login","/admin/addNewRole", "/admin/addPermission")
+        http.authorizeHttpRequests(auth -> auth.requestMatchers("/appImages/**","/admin/register","/admin/login","/admin/addNewRole", "/admin/addPermission")
                 .permitAll().anyRequest().authenticated());
 
        http.exceptionHandling(exceptionHandling -> exceptionHandling

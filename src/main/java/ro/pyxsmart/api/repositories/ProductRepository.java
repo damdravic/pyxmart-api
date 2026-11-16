@@ -1,7 +1,9 @@
 package ro.pyxsmart.api.repositories;
 
 import ro.pyxsmart.api.models.Product;
+import ro.pyxsmart.api.models.ProductImages;
 import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
+import ro.pyxsmart.api.models.modelDTO.ProductRequest;
 
 import java.util.List;
 
@@ -9,15 +11,19 @@ public interface ProductRepository {
 
     // Product
 
-    public Product createProduct(Product product);
+    Product createProduct(ProductRequest productRequest);
 
-    public List<ProductAdminDTO> getAllProducts();
+    List<ProductAdminDTO> getAllProducts();
 
-    public Product getProductById(Long id);
+    Product getProductById(Long id);
 
-    public Product updateProductById(Long id , Product product);
+    Product updateProductById(Long id, Product product);
 
-    public void deleteProductById(Long id);
+    void deleteProductById(Long id);
 
+    void verifyCodeAndSlug(String code, String slug);
 
+    ProductImages createProductImage(ProductImages productImage);
+
+    void deleteProductImagesByProductId(Long id);
 }

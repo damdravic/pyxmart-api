@@ -1,9 +1,10 @@
 package ro.pyxsmart.api.repositories;
 import ro.pyxsmart.api.models.ProductFinancial;
+import ro.pyxsmart.api.models.modelDTO.ProductFinancialRequest;
 
 public interface ProductFinancialRepository{
 
-    public ProductFinancial createProdFinancial(ProductFinancial productFinancial);
+    public ProductFinancial createProductFinancial(Long id, ProductFinancialRequest Financial);
 
     public ProductFinancial getProdFinancialByProductId(Long productId);
 

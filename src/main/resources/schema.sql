@@ -48,7 +48,14 @@ CREATE TABLE IF NOT EXISTS role_permissions(
 CREATE TABLE IF NOT EXISTS brands(
 id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
-description TEXT
+description TEXT,
+slug VARCHAR(50) NOT NULL,
+active BOOLEAN DEFAULT TRUE,
+logo_url VARCHAR(100) DEFAULT NULL,
+logo_url_secondary VARCHAR(100) DEFAULT null,
+created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT NULL,
+CONSTRAINT uk_brands UNIQUE (slug)
 );
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -63,9 +70,11 @@ CONSTRAINT fk_category_category_parent FOREIGN KEY (category_parent_id) REFERENC
 CREATE TABLE IF NOT EXISTS products(
 id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
-code VARCHAR(100) NOT NULL,
-slug VARCHAR(100) DEFAULT NULL,
-short_description VARCHAR(100) NOT NULL,
+mpnCode VARCHAR(100) NOT NULL,
+sku VARCHAR(50) NOT NULL,
+barcode VARCHAR(50) DEFAULT NULL,
+slug VARCHAR(100) NOT NULL,
+short_description VARCHAR(255) NOT NULL,
 description TEXT NOT NULL,
 category_id BIGINT UNSIGNED NOT NULL,
 brand_id BIGINT UNSIGNED NOT NULL,
@@ -78,7 +87,10 @@ created_at DATETIME DEFAULT NULL,
 updated_at DATETIME DEFAULT NULL,
 published_at DATETIME DEFAULT NULL,
 CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id),
-CONSTRAINT fk_products_brand FOREIGN KEY (brand_id) REFERENCES brands(id)
+CONSTRAINT fk_products_brand FOREIGN KEY (brand_id) REFERENCES brands(id),
+CONSTRAINT uq_products_code UNIQUE (sku),
+CONSTRAINT uq_products_slug UNIQUE (slug),
+CONSTRAINT uq_products_mpnCode_brand UNIQUE (mpnCode,brand_id)
 );
 
 CREATE TABLE IF NOT EXISTS vat_rates(
@@ -99,5 +111,32 @@ CONSTRAINT fk_product_financial_vat FOREIGN KEY (vat_rate_id) REFERENCES vat_rat
 );
 
 
+CREATE TABLE IF NOT EXISTS product_inventory(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+product_id BIGINT UNSIGNED NOT NULL,
+warehouse_id BIGINT UNSIGNED NOT NULL,
+quantity INT NOT NULL DEFAULT 0,
+reserved_quantity INT NOT NULL DEFAULT 0,
+CONSTRAINT fk_product_inventory_product_id FOREIGN KEY (product_id) REFERENCES products(id),
+CONSTRAINT fk_product_inventory_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses(id),
+CONSTRAINT uq_warehouse_product UNIQUE (product_id, warehouse_id)
+)
+
+
+CREATE TABLE IF NOT EXISTS warehouses(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+description VARCHAR(255) DEFAULT NULL,
+address VARCHAR(255) NOT NULL,
+active BOOLEAN NOT NULL DEFAULT TRUE,
+CONSTRAINT uq_warehouses_name UNIQUE (name)
+)
+
+INSERT INTO warehouses (name, description, address)
+SELECT 'Depozit principal', 'Depozitul PyXmart', 'Focsani'
+WHERE NOT EXISTS(
+    SELECT 1 FROM warehouses
+    WHERE name = "Depozit principal"
+)
 
 

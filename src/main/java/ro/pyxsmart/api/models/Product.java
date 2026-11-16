@@ -21,7 +21,9 @@ public class Product {
     // =========================
 
     private String name;
-    private String code;
+    private String mpnCode;
+    private String sku;
+    private String bareCode;
     private String slug;
 
     // =========================
@@ -46,7 +48,6 @@ public class Product {
 
 
     private ProductStatus status;
-
     private boolean featured;
 
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ro.pyxsmart.api.models.Product;
 import ro.pyxsmart.api.models.ProductFinancial;
 import ro.pyxsmart.api.models.modelDTO.ProductAdminDTO;
+import ro.pyxsmart.api.models.modelDTO.ProductFinancialRequest;
 import ro.pyxsmart.api.models.modelDTO.ProductRequest;
 
 @Component
@@ -12,7 +13,6 @@ public class ProductMapper {
     public Product productFromProductRequest(ProductRequest productRequest){
 
        return Product.builder()
-                .id(productRequest.getProductId())
                 .name(productRequest.getName())
                 .code(productRequest.getCode())
                 .shortDescription(productRequest.getShortDescription())
@@ -23,13 +23,13 @@ public class ProductMapper {
 
     }
 
-    public ProductFinancial productFinancialFromProductRequest(ProductRequest productRequest, Long productId){
+    public ProductFinancial productFinancialFromProductFinancialRequest(ProductFinancialRequest productFinancialRequest, Long productId){
 
         return ProductFinancial.builder()
                 .productId(productId)
-                .purchasePrice(productRequest.getPurchasePrice())
-                .sellingPrice(productRequest.getSellingPrice())
-                .vatRateId(productRequest.getVatRateId())
+                .purchasePrice(productFinancialRequest.getPurchasePrice())
+                .sellingPrice(productFinancialRequest.getSellingPrice())
+                .vatRateId(productFinancialRequest.getVatRateId())
                 .build();
     }
 

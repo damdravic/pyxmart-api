@@ -40,6 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getServletPath();
         return path.startsWith("/admin/login")
                 || path.startsWith("/admin/register")
+                || path.startsWith("/appImages/**")
                 || path.equals("/admin/verify/code")
                 || path.equals("/admin/verify/token");
     }
