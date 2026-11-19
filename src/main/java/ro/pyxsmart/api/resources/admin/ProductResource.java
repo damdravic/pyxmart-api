@@ -34,21 +34,28 @@ public class ProductResource {
 
     @PostMapping(value = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<@NonNull ApiResponse> createNewProduct(
-            @ModelAttribute ProductRequest productRequest,
-            @RequestParam("images" ) List<MultipartFile> images) throws IOException {
+            @RequestPart ProductRequest productRequest,
+            @RequestPart("images" ) List<MultipartFile> images) throws IOException {
 
         String message = "Product created";
+        System.out.println("in resource");
 
         ProductAdminDTO productAdminDTO = productService.createNewProduct(productRequest , images);
-        if((images != null && !images.isEmpty()) && (productAdminDTO.getProductImages() == null || productAdminDTO.getProductImages().isEmpty())){
-            message = "Product created without images.Something goes wrong !!!";
+        if (images != null && !images.isEmpty()) {
+            message = "Imagini au fost primite in BE";
+
+            if (productAdminDTO.getProductImages() == null
+                    || productAdminDTO.getProductImages().isEmpty()) {
+
+                message = "Product created without images. Something went wrong!";
+            }
         }
 
         return ResponseEntity.ok().body(
                 ApiResponse.builder()
                         .status(HttpStatus.OK.value())
                         .message(message)
-                        .data(Map.of("productAdminDTO", productService.createNewProduct(productRequest , images)))
+                        .data(Map.of("productAdminDTO",productAdminDTO))
                         .build()
         );
     }

@@ -70,9 +70,9 @@ CONSTRAINT fk_category_category_parent FOREIGN KEY (category_parent_id) REFERENC
 CREATE TABLE IF NOT EXISTS products(
 id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
-mpnCode VARCHAR(100) NOT NULL,
+mpn_code VARCHAR(100) NOT NULL,
 sku VARCHAR(50) NOT NULL,
-barcode VARCHAR(50) DEFAULT NULL,
+bare_code VARCHAR(50) DEFAULT NULL,
 slug VARCHAR(100) NOT NULL,
 short_description VARCHAR(255) NOT NULL,
 description TEXT NOT NULL,
@@ -90,7 +90,7 @@ CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(
 CONSTRAINT fk_products_brand FOREIGN KEY (brand_id) REFERENCES brands(id),
 CONSTRAINT uq_products_code UNIQUE (sku),
 CONSTRAINT uq_products_slug UNIQUE (slug),
-CONSTRAINT uq_products_mpnCode_brand UNIQUE (mpnCode,brand_id)
+CONSTRAINT uq_products_mpnCode_brand UNIQUE (mpn_code,brand_id)
 );
 
 CREATE TABLE IF NOT EXISTS vat_rates(
@@ -110,6 +110,22 @@ CONSTRAINT fk_product_financial_product FOREIGN KEY (product_id) REFERENCES prod
 CONSTRAINT fk_product_financial_vat FOREIGN KEY (vat_rate_id) REFERENCES vat_rates(id)
 );
 
+CREATE TABLE IF NOT EXISTS warehouses(
+id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+description VARCHAR(255) DEFAULT NULL,
+address VARCHAR(255) NOT NULL,
+active BOOLEAN NOT NULL DEFAULT TRUE,
+CONSTRAINT uq_warehouses_name UNIQUE (name)
+);
+
+INSERT INTO warehouses (name, description, address)
+SELECT 'Depozit principal', 'Depozitul PyXmart', 'Focsani'
+WHERE NOT EXISTS(
+    SELECT 1 FROM warehouses
+    WHERE name = 'Depozit principal'
+);
+
 
 CREATE TABLE IF NOT EXISTS product_inventory(
 id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -120,23 +136,20 @@ reserved_quantity INT NOT NULL DEFAULT 0,
 CONSTRAINT fk_product_inventory_product_id FOREIGN KEY (product_id) REFERENCES products(id),
 CONSTRAINT fk_product_inventory_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES warehouses(id),
 CONSTRAINT uq_warehouse_product UNIQUE (product_id, warehouse_id)
-)
+);
 
-
-CREATE TABLE IF NOT EXISTS warehouses(
+CREATE TABLE IF NOT EXISTS product_images(
 id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-description VARCHAR(255) DEFAULT NULL,
-address VARCHAR(255) NOT NULL,
-active BOOLEAN NOT NULL DEFAULT TRUE,
-CONSTRAINT uq_warehouses_name UNIQUE (name)
-)
+product_id BIGINT UNSIGNED NOT NULL,
+image_url VARCHAR(200) NOT NULL,
+alt_text VARCHAR(50) DEFAULT NULL,
+sort_order INTEGER DEFAULT NULL,
+is_primary BOOLEAN DEFAULT FALSE,
+created_at DATETIME DEFAULT NULL,
+CONSTRAINT FK_product_images_product_id FOREIGN KEY (product_id) REFERENCES products(id)
+);
 
-INSERT INTO warehouses (name, description, address)
-SELECT 'Depozit principal', 'Depozitul PyXmart', 'Focsani'
-WHERE NOT EXISTS(
-    SELECT 1 FROM warehouses
-    WHERE name = "Depozit principal"
-)
+
+
 
 

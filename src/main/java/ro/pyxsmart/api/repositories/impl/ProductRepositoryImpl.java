@@ -44,7 +44,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         return new MapSqlParameterSource()
                 // .addValue("id",productRequest.getId())
                 .addValue("name", productRequest.getName())
-                .addValue("code", productRequest.getMpnCode())
+                .addValue("mpnCode", productRequest.getMpnCode())
+                .addValue("sku",productRequest.getSku())
+                .addValue("bareCode",productRequest.getBareCode())
                 .addValue("slug", productRequest.getSlug())
                 .addValue("shortDescription", productRequest.getShortDescription())
                 .addValue("description", productRequest.getDescription())
@@ -81,8 +83,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
 
     @Override
-    public void verifyCodeAndSlug(String code, String slug) {
-        Integer countCode = jdbc.queryForObject(SELECT_COUNT_PRODUCT_BY_CODE_QUERY, Map.of("code", code), Integer.class);
+    public void verifyCodeAndSlug(String mpnCode, String slug) {
+        Integer countCode = jdbc.queryForObject(SELECT_COUNT_PRODUCT_BY_CODE_QUERY, Map.of("mpnCode",mpnCode), Integer.class);
         Integer countSlug = jdbc.queryForObject(SELECT_COUNT_PRODUCT_BY_SLUG_QUERY, Map.of("slug", slug), Integer.class);
 
         if (countCode != null && countCode > 0) {

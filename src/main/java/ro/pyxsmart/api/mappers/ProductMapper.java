@@ -14,11 +14,15 @@ public class ProductMapper {
 
        return Product.builder()
                 .name(productRequest.getName())
-                .code(productRequest.getCode())
+                .mpnCode(productRequest.getMpnCode())
+               .sku(productRequest.getSku())
+               .bareCode(productRequest.getBareCode())
                 .shortDescription(productRequest.getShortDescription())
                 .description(productRequest.getDescription())
                 .categoryId(productRequest.getCategoryId())
                 .brandId(productRequest.getBrandId())
+               .status(productRequest.getStatus())
+               .featured(productRequest.getFeatured())
                 .build();
 
     }
@@ -33,20 +37,11 @@ public class ProductMapper {
                 .build();
     }
 
-    public ProductAdminDTO toProductAdminDTO(Product product, ProductFinancial productFinancial){
+    public ProductAdminDTO toProductAdminDTO(Product productPar, ProductFinancial productFinancialPar){
 
          return   ProductAdminDTO.builder()
-                 .id(product.getId())
-                 .name(product.getName())
-                 .code(product.getCode())
-                 .slug(product.getSlug())
-                 .shortDescription(product.getShortDescription())
-                 .description(product.getDescription())
-                 .categoryId(product.getCategoryId())
-                 .brandId(product.getBrandId())
-                 .purchasePrice(productFinancial.getPurchasePrice())
-                 .sellingPrice(productFinancial.getSellingPrice())
-                 .vatRateId(productFinancial.getVatRateId())
+                 .product(productPar)
+                 .productFinancial(productFinancialPar)
                  .build();
 
     }

@@ -32,7 +32,7 @@ public class ProductInventoryRepositoryImpl  implements ProductInventoryReposito
             KeyHolder kh = new GeneratedKeyHolder();
             MapSqlParameterSource piParams = getPiParams(productId, productInventoryRequest);
 
-            jdbc.update(INSERT_PRODUCT_INVENTORY_QUERY, piParams);
+            jdbc.update(INSERT_PRODUCT_INVENTORY_QUERY, piParams, kh);
              return ProductInventory.builder()
                      .id(Objects.requireNonNull(kh.getKey()).longValue())
                      .warehouseId(productInventoryRequest.getWarehouseId())

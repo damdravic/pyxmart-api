@@ -1,9 +1,6 @@
 package ro.pyxsmart.api.models.modelDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ro.pyxsmart.api.models.*;
 
 import java.math.BigDecimal;
@@ -11,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Setter
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
