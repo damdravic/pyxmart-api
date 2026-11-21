@@ -46,7 +46,7 @@ public class ProductQueries {
     //
 
     public static final String INSERT_NEW_PRODUCT_IMAGE_QUERY = "INSERT INTO product_images (product_id, image_url, alt_text, sort_order, is_primary, created_at) " +
-            "VALUES (:productId, :imageUrl, :altText, :sortOrder, :isPrimary, NOW()";
+            "VALUES (:productId, :imageUrl, :altText, :sortOrder, :isPrimary, NOW())";
 
     public static final String DELETE_PRODUCT_IMAGE_BY_PRODUCT_ID_QUERY= "DELETE FROM product_images WHERE product_id = :productId";
 

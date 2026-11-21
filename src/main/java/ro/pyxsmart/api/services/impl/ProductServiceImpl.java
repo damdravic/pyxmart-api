@@ -55,8 +55,10 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductImages> saveImagesForProduct(Long id, List<MultipartFile> images) throws IOException {
         if (images == null || images.isEmpty()) {
+            log.info("is null");
             return List.of();
         }
+        log.info("in not null");
 
         List<ProductImages> productImages = new java.util.ArrayList<>(List.of());
 
@@ -88,6 +90,7 @@ public class ProductServiceImpl implements ProductService {
 
                 productImages.add(productRepository.createProductImage(pi));
             } catch (DataAccessException exception) {
+                log.error("Error -> {}" , exception.getMessage());
                 deleteProductImages(uploadPath);
                 productRepository.deleteProductImagesByProductId(id);
                 productImages.clear();

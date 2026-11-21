@@ -42,7 +42,7 @@ public class ProductResource {
 
         ProductAdminDTO productAdminDTO = productService.createNewProduct(productRequest , images);
         if (images != null && !images.isEmpty()) {
-            message = "Imagini au fost primite in BE";
+            message = "Images was sent in BE";
 
             if (productAdminDTO.getProductImages() == null
                     || productAdminDTO.getProductImages().isEmpty()) {

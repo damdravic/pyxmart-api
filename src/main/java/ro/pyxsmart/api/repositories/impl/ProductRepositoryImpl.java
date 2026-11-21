@@ -101,7 +101,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public ProductImages createProductImage(ProductImages productImage) {
 
         KeyHolder kh = new GeneratedKeyHolder();
-        jdbc.update(INSERT_NEW_PRODUCT_IMAGE_QUERY, getProdImagParams(productImage));
+        jdbc.update(INSERT_NEW_PRODUCT_IMAGE_QUERY, getProdImagParams(productImage), kh);
 
         productImage.setId(Objects.requireNonNull(kh.getKey()).longValue());
         return productImage;
@@ -110,7 +110,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     private MapSqlParameterSource getProdImagParams(ProductImages productImage) {
         return new MapSqlParameterSource()
                 .addValue("productId",productImage.getProductId())
-                .addValue("image_url",productImage.getImageUrl())
+                .addValue("imageUrl",productImage.getImageUrl())
                 .addValue("altText",productImage.getAltText())
                 .addValue("sortOrder",productImage.getSortOrder())
                 .addValue("isPrimary",productImage.getPrimary());
